@@ -10,9 +10,9 @@
     "start": "gatsby develop",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.js' '**/*.css'",
+    "format": "prettier --write '**/*.{js,css,md}'",
     "build": "gatsby build",
-    "deploy": "gh-pages -d public -b master"
+    "deploy": "npm run build && gh-pages -d public -b master"
   },
   "dependencies": {
     "gatsby": "^1.9.223",

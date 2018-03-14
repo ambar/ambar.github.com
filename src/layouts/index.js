@@ -3,6 +3,7 @@ import Link from 'gatsby-link'
 import {Container} from 'react-responsive-grid'
 import 'typeface-alegreya'
 import 'typeface-alegreya-sans'
+import '../styles/prism-coy.css'
 import {rhythm, scale} from '../utils/typography'
 
 const name = '长天之云'
@@ -45,7 +46,7 @@ class Template extends React.Component {
           style={{
             fontFamily: 'Montserrat, sans-serif',
             marginTop: 0,
-            marginBottom: rhythm(-1),
+            marginBottom: rhythm(-0.5),
           }}
         >
           <Link

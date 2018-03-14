@@ -35,6 +35,7 @@
     "react-responsive-grid": "^0.3.4",
     "typeface-alegreya": "^0.0.54",
     "typeface-alegreya-sans": "^0.0.54",
+    "typography-plugin-code": "^0.16.11",
     "typography-theme-de-young": "^0.16.9"
   },
   "devDependencies": {

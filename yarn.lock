@@ -10085,6 +10085,13 @@ typography-normalize@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/typography-normalize/-/typography-normalize-0.14.0.tgz#1d77c1fe2aaf4a51b3673c4c85c85a65a2d4b573"
 
+typography-plugin-code@^0.16.11:
+  version "0.16.11"
+  resolved "https://registry.yarnpkg.com/typography-plugin-code/-/typography-plugin-code-0.16.11.tgz#037c72803c2d76113220cf85d1a55d7cfc6a34de"
+  dependencies:
+    gray-percentage "^2.0.0"
+    lodash "^4.13.1"
+
 typography-theme-de-young@^0.16.9:
   version "0.16.9"
   resolved "https://registry.yarnpkg.com/typography-theme-de-young/-/typography-theme-de-young-0.16.9.tgz#3c7ce11c87c1190a34330e7454cae320b4bd4ff7"

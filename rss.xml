@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[长天之云]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>http://ambar.li</link><generator>RSS for Node</generator><lastBuildDate>Wed, 14 Mar 2018 16:49:49 GMT</lastBuildDate><item><title><![CDATA[JavaScript 实现中英文空格]]></title><description><![CDATA[为什么需要 JavaScript 处理？ 写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况： 字符串插值，例如  {nameA}赞同了{nameB}的回答  有时在表达式一侧，有时在表达式两侧 各个节点之间（元素或文本），例如  <Link>{name…]]></description><link>http://ambar.li/2018-02-05---cjkspace/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---cjkspace/</guid><pubDate>Mon, 05 Feb 2018 15:56:00 GMT</pubDate><content:encoded>&lt;h2&gt;为什么需要 JavaScript 处理？&lt;/h2&gt;
+&lt;p&gt;写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;字符串插值，例如 &lt;code&gt;{nameA}赞同了{nameB}的回答&lt;/code&gt; 有时在表达式一侧，有时在表达式两侧&lt;/li&gt;
+&lt;li&gt;各个节点之间（元素或文本），例如 &lt;code&gt;&amp;#x3C;Link&gt;{name}&amp;#x3C;/Link&gt;赞同了回答&lt;/code&gt; 更复杂的情况是循环中生成列表项、元素有多层有嵌套&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;添加空格的规则&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;有条件地在中英文之间插入空格，例如「Kiki 赞同了回答」&lt;/li&gt;
+&lt;li&gt;标点前后不加空格，例如「《Black Mirror》」，「Black Mirror。」&lt;/li&gt;
+&lt;li&gt;不格式化文本，因为格式化会删除多余空格、格式化会影响原始的内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;具体来说，将所有文本分成四类： CJK 字符、标点、空格、其他（西文字符），在 CJK 字符与其他（西文字符）之间添加空格，其他的情况不添加。&lt;/p&gt;
+&lt;h2&gt;如何实现&lt;/h2&gt;
+&lt;p&gt;对于字符归类，使用三个标准化 ES2018 正则（&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//github.com/tc39/proposal-regexp-unicode-property-escapes&quot;&gt;unicode property escape&lt;/a&gt;，可通过 &lt;a href=&quot;http://link.zhihu.com/?target=https%3A//mothereff.in/regexpu&quot;&gt;transpiler&lt;/a&gt; 预览 ES5 转换结果）：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/* 标点 */&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; punctuationRegex &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token regex&quot;&gt;/\p{Punctuation}/u&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;/* 空格 */&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; spaceRegex &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token regex&quot;&gt;/\p{Separator}/u&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;/* CJK 字符，中日韩 */&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; cjkRegex &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token regex&quot;&gt;/\p{Script=Han}|\p{Script=Katakana}|\p{Script=Hiragana}|\p{Script=Hangul}/u&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;对于字符串插值，可以利用模板标签（tagged template）来简化，它本质上是一个接受一组字符串和替换表达式的函数，把字符串和表达式挨个连接起来并去空，再添加空格：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;cjkspace&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;string&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;subs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;string&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; subs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;c &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; c &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;shouldSpace&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos; &apos;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;对于节点之间，要求是有样式的节点（如链接）首尾不能加入空格，例如结构 &lt;code&gt;(a &gt; span &gt; textA) + (span &gt; textB)&lt;/code&gt;，可靠的做法是将生成的文本节点放在两个文本之间的公共元素之下：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;findCommonAncestor&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; pathA &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; n &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; n&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;parent&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; pathB &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; n &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; n&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;parent&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; index &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; pathA&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;findIndex&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; pathB&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;// 将在 CA 下插入，在靠近 a 的一侧祖先元素之后&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;pathA&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;index&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; pathA&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;index &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;以 React 为例的处理过程是，遍历 ReactNode 节点树，转化成中间节点树（收集必要信息）并往其中添加空格节点，还原中间节点树为 ReactNode 节点树。&lt;/p&gt;
+&lt;h2&gt;如何使用&lt;/h2&gt;
+&lt;p&gt;在字符串之间添加空格，使用模板标签：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; cjkspace &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;cjkspace&apos;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; userA &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Kiki&apos;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; userB &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;喵喵&apos;&lt;/span&gt;
+cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;userA&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;和&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;userB&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;赞同了你`&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// =&gt; &apos;Kiki 和喵喵赞同了你&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;在 React Node 之间添加空格，使用 React 组件：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;CJKSpace&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;cjkspace/react&apos;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;CJKSpace&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Link&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;Link&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  赞同了&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Coco&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;的回答
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;CJKSpace&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// =&gt; &amp;lt;a href&gt;Kiki&amp;lt;a&gt; 赞同了 Coco 的回答&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/question/19587406&quot;&gt;中英文混排时中文与英文之间是否要有空格？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=http%3A//www.unicode.org/reports/tr44/%23GC_Values_Table&quot;&gt;http://www.unicode.org/reports/tr44/#GC&lt;em&gt;Values&lt;/em&gt;Table&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//msdn.microsoft.com/zh-cn/library/gg721767%28v%3Dexpression.40%29.aspx&quot;&gt;MSDN text-autospace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[用 CSS 修复 WebKit 伪粗体问题]]></title><description><![CDATA[如何重现： Code Pen 样例页面 （使用最新版 iOS/macOS Safari 访问） 解决方式： 样例截图： macOS High Sierra 10.13.1 - Safari 说明： 重现版本为 iOS 11.1.1，macOS High Sierra 10.1…]]></description><link>http://ambar.li/2017-11-15---webkit-font-synthesis-bug/</link><guid isPermaLink="false">http://ambar.li/2017-11-15---webkit-font-synthesis-bug/</guid><pubDate>Wed, 15 Nov 2017 16:08:00 GMT</pubDate><content:encoded>&lt;p&gt;如何重现：&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//codepen.io/ambarli/full/XzgYeP/&quot;&gt;Code Pen 样例页面&lt;/a&gt;（使用最新版 iOS/macOS Safari 访问）&lt;/p&gt;
+&lt;p&gt;解决方式：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token property&quot;&gt;font-synthesis&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; style&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;样例截图：&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-3b84f.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 113.47222222222221%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAXABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAIDBAX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAHs3UyLURjmGgH/xAAcEAABAwUAAAAAAAAAAAAAAAABAhARAxIiMTL/2gAIAQEAAQUCDjZVDW51BKk8/wD/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/AR//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/AR//xAAWEAEBAQAAAAAAAAAAAAAAAAAQEUH/2gAIAQEABj8CY6//xAAcEAADAAEFAAAAAAAAAAAAAAAAARExECFRYXH/2gAIAQEAAT8h8XsWNGWw2URwTb4FFCY1TEf/2gAMAwEAAgADAAAAEJAHAP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8QH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8QH//EAB8QAAICAgEFAAAAAAAAAAAAAAERADEhQVEQYXGh4f/aAAgBAQABPxAwy79jj1FRBDhLoFuFP5DCAx8wE0hrMIShtscwlAAUu8BDLwNz/9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;样例&quot;
+        title=&quot;&quot;
+        src=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-f8fb9.jpg&quot;
+        srcset=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-e8976.jpg 148w,
+/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-63df2.jpg 295w,
+/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-f8fb9.jpg 590w,
+/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-3b84f.jpg 720w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;macOS High Sierra 10.13.1 - Safari&lt;/p&gt;
+&lt;p&gt;说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;重现版本为 iOS 11.1.1，macOS High Sierra 10.13.1，条件为使用 &lt;code&gt;-apple-system&lt;/code&gt; 指定字体（即同时使用苹方与 San Francisco）&lt;/li&gt;
+&lt;li&gt;红色的方框内被加粗的&lt;strong&gt;中文&lt;/strong&gt;是「伪粗体」，在字重为 &lt;strong&gt;600/700&lt;/strong&gt; 时触发&lt;/li&gt;
+&lt;li&gt;绿色的方框内是应用样式修复后的结果&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;font-synthesis: initial&lt;/code&gt;相当于 &lt;code&gt;font-synthesis: weight style&lt;/code&gt;，因此不能使用 &lt;code&gt;font-synthesis: none&lt;/code&gt; ，否则会影响斜体（font-style）的合成&lt;/li&gt;
+&lt;li&gt;高 DPI 设备（iPhone X）问题不太明显&lt;/li&gt;
+&lt;li&gt;WebKit 一个月前修复了这个问题（&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//trac.webkit.org/changeset/223589/webkit&quot;&gt;r223589&lt;/a&gt;，此文的修复方法就是参考了它的回归测试代码），&lt;del&gt;但什么时候能发布不确定&lt;/del&gt; 己在 Safari Technology Preview 11.1（WebKit 13605.1.13.2）中确认被修复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;关于字体样式的补充：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为了与原生界面的字体一致，web 页面会按「system-ui, fallback names, generic name」顺序指定字体，如：&lt;code&gt;font-family: -apple-system, BlinkMacSystemFont, ..., sans-serif&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;根据截图也可以看出，苹方没有 Bold 字重（只有 Semibold，600），而 San Francisco 有 Bold 字重，会导致 CSS 使用 bold（700）指定字重时，中西文粗体不均衡（中文回退到 600），使用 500 或 600 会达到最佳效果&lt;/li&gt;
+&lt;li&gt;Android 中文使用思源黑体，但由于字重缺失，需要使用 700 达到加粗效果；西文有点值得注意，lang 属性会影响字体选择（&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/XzaEPr&quot;&gt;CodePen demo: lang &amp;#x26; Noto Sans &amp;#x26; Roboto&lt;/a&gt;），zh 会应用思源黑体，en 会应用 Roboto&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;根据上述限制，推荐在项目中使用 mixin 实现粗体：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/* postcss-mixins 的例子 */&lt;/span&gt;
+&lt;span class=&quot;token atrule&quot;&gt;&lt;span class=&quot;token rule&quot;&gt;@define-mixin&lt;/span&gt; bold&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;/* 也可以只应用在 iOS/macOS 上 */&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;font-weight&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 600&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;font-synthesis&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; style&lt;span class=&quot;token selector&quot;&gt;;
+
+  html[data-android] &amp;amp;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;font-weight&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 700&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.title&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token atrule&quot;&gt;&lt;span class=&quot;token rule&quot;&gt;@mixin&lt;/span&gt; bold&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;hr&gt;
+&lt;p&gt;当中英文同时出现而字重不一的例子，来自 iOS 官方应用：&lt;/p&gt;
+&lt;p&gt;音乐: 
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 100%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMCAQX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH3EdlGR2YXB//EABkQAAMBAQEAAAAAAAAAAAAAAAABEQISMf/aAAgBAQABBQKkREdV06NeZ1Wf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwEf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwEf/8QAGhAAAgIDAAAAAAAAAAAAAAAAADEBAiAhQf/aAAgBAQAGPwJSIROrHcf/xAAeEAEAAgIBBQAAAAAAAAAAAAABABEhMWEQQVFxsf/aAAgBAQABPyGgvwizaGHAhqjtPKvW4cGYNrWY9aHT/9oADAMBAAIAAwAAABBk6Dz/xAAVEQEBAAAAAAAAAAAAAAAAAAABIP/aAAgBAwEBPxBj/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAQADAQADAAAAAAAAAAAAAREAIUFRMWGB/9oACAEBAAE/EAkK3e0xso+zINQOSYSdB1sGdMCSyem/zKXVGb7hDQqm+4fmNdHcCfHc/9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;音乐&quot;
+        title=&quot;&quot;
+        src=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg&quot;
+        srcset=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-e8976.jpg 148w,
+/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-63df2.jpg 295w,
+/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg 590w,
+/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg 720w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;App Store: 
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 100%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAMCBf/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAAB6ls0jAutzGbA/8QAGxABAAICAwAAAAAAAAAAAAAAAQACAxESITL/2gAIAQEAAQUCMhe4E5VrD0MRY9FXbP/EABYRAQEBAAAAAAAAAAAAAAAAAAEAEP/aAAgBAwEBPwGA3//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EAB4QAAECBwEAAAAAAAAAAAAAAAECEAAgITFBQmGR/9oACAEBAAY/AlJGvIsPGOGoRJ//xAAeEAEAAgEEAwAAAAAAAAAAAAABABEhEDFBcVGBkf/aAAgBAQABPyE9htTcNOaHAaOiYbOW4Tgu/UfH4pkJ3MIh50//2gAMAwEAAgADAAAAEJ/QAP/EABkRAQACAwAAAAAAAAAAAAAAAAEAERCR8P/aAAgBAwEBPxBKii17Wf/EABgRAAIDAAAAAAAAAAAAAAAAAAERABAh/9oACAECAQE/EAXsLv8A/8QAHxABAQACAQQDAAAAAAAAAAAAAREAITFBUWGhgZHw/9oACAEBAAE/EFJ1FpbNPXNv+pPZkM0SnD+1lRye4r51lord1GBAEjau8kUU9sSIC8DrgT5z/9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;App Store&quot;
+        title=&quot;&quot;
+        src=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg&quot;
+        srcset=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-e8976.jpg 148w,
+/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-63df2.jpg 295w,
+/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg 590w,
+/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg 720w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;</content:encoded></item></channel></rss>

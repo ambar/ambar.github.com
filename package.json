@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write '**/*.js' '**/*.css'",
     "build": "gatsby build",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+    "deploy": "gh-pages -d public -b master"
   },
   "dependencies": {
     "gatsby": "^1.9.223",

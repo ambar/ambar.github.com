@@ -1,2 +1,0 @@
-webpackJsonp([0xee93a057a8f1],{505:function(t,e){t.exports={data:{site:{siteMetadata:{title:"Gatsby Blog",author:"Ambar"}},markdownRemark:{id:"/Users/lj/dev/ambar.github.com/posts/hi.md absPath of file >>> MarkdownRemark",html:"<p>hi.</p>",frontmatter:{title:"Hello World",date:"May 01, 2015"}}},pathContext:{slug:"/hi/",previous:!1,next:{fields:{slug:"/my-second-post/"},frontmatter:{title:"My Second Post!"}}}}}});
-//# sourceMappingURL=path---hi-398908f858bfbeaf2a39.js.map

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Blog',
-    author: 'Ambar',
+    title: '长天之云',
+    author: 'ambar',
     description: 'A starter blog demonstrating what Gatsby can do.',
     siteUrl: 'http://ambar.li',
   },

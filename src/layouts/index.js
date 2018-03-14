@@ -4,9 +4,12 @@ import {Container} from 'react-responsive-grid'
 
 import {rhythm, scale} from '../utils/typography'
 
+const name = '长天之云'
+
 class Template extends React.Component {
   render() {
     const {location, children} = this.props
+
     let header
 
     let rootPath = `/`
@@ -31,7 +34,7 @@ class Template extends React.Component {
             }}
             to={'/'}
           >
-            Gatsby Starter Blog
+            {name}
           </Link>
         </h1>
       )
@@ -52,7 +55,7 @@ class Template extends React.Component {
             }}
             to={'/'}
           >
-            Gatsby Starter Blog
+            {name}
           </Link>
         </h3>
       )

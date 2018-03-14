@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[长天之云]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>http://ambar.li</link><generator>RSS for Node</generator><lastBuildDate>Wed, 14 Mar 2018 16:49:49 GMT</lastBuildDate><item><title><![CDATA[JavaScript 实现中英文空格]]></title><description><![CDATA[为什么需要 JavaScript 处理？ 写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况： 字符串插值，例如  {nameA}赞同了{nameB}的回答  有时在表达式一侧，有时在表达式两侧 各个节点之间（元素或文本），例如  <Link>{name…]]></description><link>http://ambar.li/2018-02-05---cjkspace/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---cjkspace/</guid><pubDate>Mon, 05 Feb 2018 15:56:00 GMT</pubDate><content:encoded>&lt;h2&gt;为什么需要 JavaScript 处理？&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[长天之云]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>http://ambar.li</link><generator>RSS for Node</generator><lastBuildDate>Wed, 14 Mar 2018 17:02:26 GMT</lastBuildDate><item><title><![CDATA[JavaScript 实现中英文空格]]></title><description><![CDATA[为什么需要 JavaScript 处理？ 写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况： 字符串插值，例如  {nameA}赞同了{nameB}的回答  有时在表达式一侧，有时在表达式两侧 各个节点之间（元素或文本），例如  <Link>{name…]]></description><link>http://ambar.li/2018-02-05---cjkspace/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---cjkspace/</guid><pubDate>Mon, 05 Feb 2018 15:56:00 GMT</pubDate><content:encoded>&lt;h2&gt;为什么需要 JavaScript 处理？&lt;/h2&gt;
 &lt;p&gt;写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;字符串插值，例如 &lt;code&gt;{nameA}赞同了{nameB}的回答&lt;/code&gt; 有时在表达式一侧，有时在表达式两侧&lt;/li&gt;
@@ -80,7 +80,7 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
 &lt;p&gt;
   &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-3b84f.jpg&quot;
+    href=&quot;/static/2017-11-15---01-12a07a049ce75958868d243519456c50-b327c.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -92,18 +92,19 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
   &gt;
     &lt;span
       class=&quot;gatsby-resp-image-background-image&quot;
-      style=&quot;padding-bottom: 113.47222222222221%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAXABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAIDBAX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAHs3UyLURjmGgH/xAAcEAABAwUAAAAAAAAAAAAAAAABAhARAxIiMTL/2gAIAQEAAQUCDjZVDW51BKk8/wD/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/AR//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/AR//xAAWEAEBAQAAAAAAAAAAAAAAAAAQEUH/2gAIAQEABj8CY6//xAAcEAADAAEFAAAAAAAAAAAAAAAAARExECFRYXH/2gAIAQEAAT8h8XsWNGWw2URwTb4FFCY1TEf/2gAMAwEAAgADAAAAEJAHAP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8QH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8QH//EAB8QAAICAgEFAAAAAAAAAAAAAAERADEhQVEQYXGh4f/aAAgBAQABPxAwy79jj1FRBDhLoFuFP5DCAx8wE0hrMIShtscwlAAUu8BDLwNz/9k=&apos;); background-size: cover; display: block;&quot;
+      style=&quot;padding-bottom: 113.53251318101934%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAXABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMCBAX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH2bR0VZHFQOgH/xAAbEAABBAMAAAAAAAAAAAAAAAABAhARIgMxMv/aAAgBAQABBQIONlUNF8gsnn//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/AR//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/AR//xAAYEAACAwAAAAAAAAAAAAAAAAAAARARIP/aAAgBAQAGPwKayj//xAAcEAEAAgIDAQAAAAAAAAAAAAABABEQITFRYXH/2gAIAQEAAT8h+L9hxhGhZYpqCvUK23Lg7xP/2gAMAwEAAgADAAAAEBDIAP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8QH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8QH//EAB8QAQABBAIDAQAAAAAAAAAAAAERACExQVFhEHGh4f/aAAgBAQABPxBks59m3yowgQ4SPAtwxP5TEEntoKYg4vSPK9nXPunMbAxHdYSrBuv/2Q==&apos;); background-size: cover; display: block;&quot;
     &gt;
       &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
         alt=&quot;样例&quot;
         title=&quot;&quot;
-        src=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-f8fb9.jpg&quot;
-        srcset=&quot;/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-e8976.jpg 148w,
-/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-63df2.jpg 295w,
-/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-f8fb9.jpg 590w,
-/static/v2-212aa171f1a0a8a72a6edd315148d4ab_hd-7cb95f4c63f3ffe24ef0dced79131878-3b84f.jpg 720w&quot;
+        src=&quot;/static/2017-11-15---01-12a07a049ce75958868d243519456c50-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-15---01-12a07a049ce75958868d243519456c50-e8976.jpg 148w,
+/static/2017-11-15---01-12a07a049ce75958868d243519456c50-63df2.jpg 295w,
+/static/2017-11-15---01-12a07a049ce75958868d243519456c50-f8fb9.jpg 590w,
+/static/2017-11-15---01-12a07a049ce75958868d243519456c50-85e3d.jpg 885w,
+/static/2017-11-15---01-12a07a049ce75958868d243519456c50-b327c.jpg 1138w&quot;
         sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
       /&gt;
     &lt;/span&gt;
@@ -151,7 +152,7 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
 &lt;p&gt;音乐: 
   &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg&quot;
+    href=&quot;/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -170,11 +171,11 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
         style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
         alt=&quot;音乐&quot;
         title=&quot;&quot;
-        src=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg&quot;
-        srcset=&quot;/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-e8976.jpg 148w,
-/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-63df2.jpg 295w,
-/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg 590w,
-/static/v2-1a88bbea80eee6974484616b9dab2db1_hd-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg 720w&quot;
+        src=&quot;/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-e8976.jpg 148w,
+/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-63df2.jpg 295w,
+/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-f8fb9.jpg 590w,
+/static/2017-11-15---02-47c33cceb076d1a6521945c1a0f1b7fb-3b84f.jpg 720w&quot;
         sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
       /&gt;
     &lt;/span&gt;
@@ -185,7 +186,7 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
 &lt;p&gt;App Store: 
   &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg&quot;
+    href=&quot;/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -204,11 +205,11 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
         style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
         alt=&quot;App Store&quot;
         title=&quot;&quot;
-        src=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg&quot;
-        srcset=&quot;/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-e8976.jpg 148w,
-/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-63df2.jpg 295w,
-/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg 590w,
-/static/v2-769e7f5b62038b86699183beb158ea68_hd-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg 720w&quot;
+        src=&quot;/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-e8976.jpg 148w,
+/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-63df2.jpg 295w,
+/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-f8fb9.jpg 590w,
+/static/2017-11-15---03-77b8f0bad92857bcbcafdfafdbb1c6b2-3b84f.jpg 720w&quot;
         sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
       /&gt;
     &lt;/span&gt;

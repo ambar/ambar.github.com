@@ -13,7 +13,7 @@ font-synthesis: style;
 
 样例截图：
 
-![样例](./images/v2-212aa171f1a0a8a72a6edd315148d4ab_hd.jpg)
+![样例](images/2017-11-15---01.jpg)
 
 macOS High Sierra 10.13.1 - Safari
 
@@ -57,6 +57,6 @@ macOS High Sierra 10.13.1 - Safari
 
 当中英文同时出现而字重不一的例子，来自 iOS 官方应用：
 
-音乐: ![音乐](./images/v2-1a88bbea80eee6974484616b9dab2db1_hd.jpg)
+音乐: ![音乐](images/2017-11-15---02.jpg)
 
-App Store: ![App Store](./images/v2-769e7f5b62038b86699183beb158ea68_hd.jpg)
+App Store: ![App Store](images/2017-11-15---03.jpg)

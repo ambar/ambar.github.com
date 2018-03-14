@@ -1,0 +1,2 @@
+webpackJsonp([0xee93a057a8f1],{505:function(t,e){t.exports={data:{site:{siteMetadata:{title:"长天之云",author:"ambar"}},markdownRemark:{id:"/Users/lj/dev/ambar.github.com/posts/hi.md absPath of file >>> MarkdownRemark",html:"<p>hi.</p>",frontmatter:{title:"Hello World",date:"May 01, 2015"}}},pathContext:{slug:"/hi/",previous:!1,next:{fields:{slug:"/my-second-post/"},frontmatter:{title:"My Second Post!"}}}}}});
+//# sourceMappingURL=path---hi-05b4a5eb9153883ebbcd.js.map

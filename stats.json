@@ -1,0 +1,56 @@
+{
+  "assetsByChunkName": {
+    "path---my-second-post": [
+      "path---my-second-post-fb672abdf3ca7720b677.js",
+      "path---my-second-post-fb672abdf3ca7720b677.js.map"
+    ],
+    "component---src-pages-index-js": [
+      "component---src-pages-index-js-5d0ddebb4cecbfd462d0.js",
+      "component---src-pages-index-js-5d0ddebb4cecbfd462d0.js.map"
+    ],
+    "path---": [
+      "path----557518bd178906f8d58a.js",
+      "path----557518bd178906f8d58a.js.map"
+    ],
+    "component---node-modules-gatsby-plugin-offline-app-shell-js": [
+      "component---node-modules-gatsby-plugin-offline-app-shell-js-5c4c5a0f7af9dc69d6d7.js",
+      "component---node-modules-gatsby-plugin-offline-app-shell-js-5c4c5a0f7af9dc69d6d7.js.map"
+    ],
+    "component---src-templates-blog-post-js": [
+      "component---src-templates-blog-post-js-e224bf11b3a6221167db.js",
+      "component---src-templates-blog-post-js-e224bf11b3a6221167db.js.map"
+    ],
+    "component---src-layouts-index-js": [
+      "component---src-layouts-index-js-fb49e21bed7b56adaaff.js",
+      "component---src-layouts-index-js-fb49e21bed7b56adaaff.js.map"
+    ],
+    "path---hi-folks": [
+      "path---hi-folks-d336b9d820b94da7d7bf.js",
+      "path---hi-folks-d336b9d820b94da7d7bf.js.map"
+    ],
+    "path---index": [
+      "path---index-b505088462128116137c.js",
+      "path---index-b505088462128116137c.js.map"
+    ],
+    "commons": [
+      "commons-bde6322439ae79794142.js",
+      "build-js-styles.css",
+      "commons-bde6322439ae79794142.js.map",
+      "build-js-styles.css.map"
+    ],
+    "path---offline-plugin-app-shell-fallback": [
+      "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js",
+      "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js.map"
+    ],
+    "app": [
+      "app-6b6c5c0b3f1ee5baf5be.js",
+      "build-js-styles.css",
+      "app-6b6c5c0b3f1ee5baf5be.js.map",
+      "build-js-styles.css.map"
+    ],
+    "path---hi": [
+      "path---hi-398908f858bfbeaf2a39.js",
+      "path---hi-398908f858bfbeaf2a39.js.map"
+    ]
+  }
+}

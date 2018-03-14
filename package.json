@@ -33,9 +33,9 @@
     "gatsby-transformer-sharp": "^1.6.21",
     "lodash": "^4.17.5",
     "react-responsive-grid": "^0.3.4",
-    "typeface-merriweather": "0.0.43",
-    "typeface-montserrat": "0.0.43",
-    "typography-theme-wordpress-2016": "^0.15.10"
+    "typeface-alegreya": "^0.0.54",
+    "typeface-alegreya-sans": "^0.0.54",
+    "typography-theme-de-young": "^0.16.9"
   },
   "devDependencies": {
     "eslint": "^4.18.2",

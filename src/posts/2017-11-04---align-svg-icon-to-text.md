@@ -114,7 +114,7 @@ top
 
 无论选择哪种偏移方式，偏移值都会根据当前字体不同而有细微差异，见下图的高亮列：
 
-![Font Metrics](images/2017-11-04---fm.jpg)
+![Font Metrics](images/2017-11-04---fm.png)
 
 图 2：Font Metrics
 
@@ -122,7 +122,7 @@ top
 
 「精确」指达到与浏览器自行对齐相同的效果。需求来自问题 2，如何封装一个图标组件，仅通过修改图标本身来对齐相邻文本。
 
-![line-height](images/2017-11-04---02.jpg)
+![line-height](images/2017-11-04---lh.png)
 
 图 3：三种 line-height
 

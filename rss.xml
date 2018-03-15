@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[长天之云]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>http://ambar.li</link><generator>RSS for Node</generator><lastBuildDate>Wed, 14 Mar 2018 17:02:26 GMT</lastBuildDate><item><title><![CDATA[JavaScript 实现中英文空格]]></title><description><![CDATA[为什么需要 JavaScript 处理？ 写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况： 字符串插值，例如  {nameA}赞同了{nameB}的回答  有时在表达式一侧，有时在表达式两侧 各个节点之间（元素或文本），例如  <Link>{name…]]></description><link>http://ambar.li/2018-02-05---cjkspace/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---cjkspace/</guid><pubDate>Mon, 05 Feb 2018 15:56:00 GMT</pubDate><content:encoded>&lt;h2&gt;为什么需要 JavaScript 处理？&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[长天之云]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>http://ambar.li</link><generator>RSS for Node</generator><lastBuildDate>Thu, 15 Mar 2018 01:02:37 GMT</lastBuildDate><item><title><![CDATA[JavaScript 实现中英文空格]]></title><description><![CDATA[为什么需要 JavaScript 处理？ 写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况： 字符串插值，例如  {nameA}赞同了{nameB}的回答  有时在表达式一侧，有时在表达式两侧 各个节点之间（元素或文本），例如  <Link>{name…]]></description><link>http://ambar.li/2018-02-05---cjkspace/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---cjkspace/</guid><pubDate>Mon, 05 Feb 2018 15:56:00 GMT</pubDate><content:encoded>&lt;h2&gt;为什么需要 JavaScript 处理？&lt;/h2&gt;
 &lt;p&gt;写普通的文案时，我们有约定如何使用空格，但动态内容的处理有两种麻烦情况：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;字符串插值，例如 &lt;code&gt;{nameA}赞同了{nameB}的回答&lt;/code&gt; 有时在表达式一侧，有时在表达式两侧&lt;/li&gt;
@@ -70,6 +70,120 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
 &lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/question/19587406&quot;&gt;中英文混排时中文与英文之间是否要有空格？&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=http%3A//www.unicode.org/reports/tr44/%23GC_Values_Table&quot;&gt;http://www.unicode.org/reports/tr44/#GC&lt;em&gt;Values&lt;/em&gt;Table&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//msdn.microsoft.com/zh-cn/library/gg721767%28v%3Dexpression.40%29.aspx&quot;&gt;MSDN text-autospace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[CSS 实现夜间模式]]></title><description><![CDATA[实现主题配色的通常需求有： 只引用单个颜色变量，在切换主题时自动切换变量对应其他色值 在一条 CSS…]]></description><link>http://ambar.li/2018-02-05---css-dark-mode/</link><guid isPermaLink="false">http://ambar.li/2018-02-05---css-dark-mode/</guid><pubDate>Mon, 05 Feb 2018 14:44:00 GMT</pubDate><content:encoded>&lt;p&gt;实现主题配色的通常需求有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只引用单个颜色变量，在切换主题时自动切换变量对应其他色值&lt;/li&gt;
+&lt;li&gt;在一条 CSS 声明中可能会使用到多个颜色，例如多层阴影叠加和渐变色定义&lt;/li&gt;
+&lt;li&gt;进行颜色的微调，不同的场景下调整的属性和幅度可能不一样，例如按钮通过降低当前填充色的亮度来应用悬停样式&lt;/li&gt;
+&lt;li&gt;在不刷新页面条件下动态切换主题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;A. 原生 &lt;code&gt;var&lt;/code&gt; 实现&lt;/h2&gt;
+&lt;p&gt;两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;调用 &lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/API/CSS_Object_Model&quot;&gt;CSSOM API&lt;/a&gt; 设置或改变 &lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/CSS/--*&quot;&gt;custom properties&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;将颜色变量同时绑定到 &lt;code&gt;:root&lt;/code&gt; 和某个公共元素容器上，通过切换容器的属性来切换变量对应的色值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前者在服务器渲染的场景下不适用，后者的例子：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/* 定义颜色 */&lt;/span&gt;
+&lt;span class=&quot;token selector&quot;&gt;:root&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;--myColor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;#fff&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;/* 利用公共元素，当它匹配了特定属性时，改变变量对应色值 */&lt;/span&gt;
+&lt;span class=&quot;token selector&quot;&gt;html[data-theme=&apos;dark&apos;]&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;--myColor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;#000&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;/* 引用颜色 */&lt;/span&gt;
+&lt;span class=&quot;token selector&quot;&gt;.myComponent&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;--myColor&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;原生 var 的缺陷有两个：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不兼容部分浏览器（IE 11 和 Android 4）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;无法对颜色进行调整：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有标准 &lt;a href=&quot;https://www.w3.org/TR/css-color-4/#modifying-colors&quot;&gt;color-mod&lt;/a&gt; 函数，但还未有浏览器实现（更希望浏览器能让开发者自行实现不被支持 API，类似于 &lt;a href=&quot;https://github.com/w3c/css-houdini-drafts&quot;&gt;w3c/css-houdini-drafts&lt;/a&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;也无法提前编译（如使用 &lt;a href=&quot;https://github.com/postcss/postcss-color-function&quot;&gt;postcss-color-function&lt;/a&gt;），因为变量的值在编译时还未决定。如果把调整之后的值保存到变量，则需要将每一种重要或不重要的边框、阴影或渐变定义到变量（并且每主题一份），这会使变量表不断增长&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;B. PostCSS 实现&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.npmjs.com/package/postcss-theme-colors&quot;&gt;postcss-theme-color&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;利用 &lt;a href=&quot;http://postcss.org/&quot;&gt;PostCSS&lt;/a&gt; 我们可以定制想要的 CSS API，像原生 var 一样引用颜色，再继续使用 color function 来调整颜色。&lt;/p&gt;
+&lt;p&gt;输入:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token selector&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;cc&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;G01&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;cc&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;G01&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;-8%&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;输出:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token selector&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; #eee&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;rgba&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;238, 238, 238, 0.92&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;html[data-theme=&apos;dark&apos;] a&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; #111&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;rgba&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;17, 17, 17, 0.92&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;配置颜色的例子，&lt;code&gt;postcss.config.js&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/* 为颜色命名 */&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; colors &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  C01&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;#eee&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  C02&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;#111&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;/* 按主题分组 */&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; groups &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  G01&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;C01&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;C02&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;exports &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  plugins&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;postcss-theme-colors&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;colors&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; groups&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;缺陷：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生成的 CSS 文件比无主题使用要大一些&lt;/li&gt;
+&lt;li&gt;非默认主题下如果需要重置去掉颜色，会遇到优先级的问题（尽管不太常见）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;C. 静态编译&lt;/h2&gt;
+&lt;p&gt;为每一份主题生成一份 CSS 文件，例如 bundle.light.css、bundle.dark.css。如要切换主题，改变 link 指向的 CSS 文件路径。&lt;/p&gt;
+&lt;p&gt;缺陷：对工具使用和引用有过多的要求，尤其是在跨项目引用组件库时会很麻烦（为每个组件生成多份 CSS 或需要将 CSS 配置成源码模式编译）。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;结论&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;方案 A 最理想，但暂时达不到我们的兼容性要求&lt;/li&gt;
+&lt;li&gt;方案 B 最实用，它还能在后期调整参数编译成方案 A 或方案 C&lt;/li&gt;
+&lt;li&gt;方案 C 适合有耐心、追求极限文件尺寸的开发者，是一种很快会过时的方案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PS，我们的配色迁移案例是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;设计新的色表&lt;/li&gt;
+&lt;li&gt;统计项目中所有被使用的颜色（hex/rgb/hsl）&lt;/li&gt;
+&lt;li&gt;根据人工决定和&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E9%A2%9C%E8%89%B2%E5%B7%AE%E5%BC%82&quot;&gt;颜色差异&lt;/a&gt;算法生成替换表，替换所有颜色到新色表（448 种颜色使用减少为 20 个色组使用）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;PPS，两个额外的夜间适配技巧：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于前景图片或背景图片或 SVG 元素图标，可以应用滤镜：&lt;code&gt;filter: brightness(0.7)&lt;/code&gt; 来降低亮度&lt;/li&gt;
+&lt;li&gt;对于外链 SVG 的纯文字信息（例如公式），虽然不能继承当前页面文本样式，但也可以使用滤镜 &lt;code&gt;filter: invert(0.6) hue-rotate(180deg)&lt;/code&gt; 转换到当前文本的颜色（&lt;code&gt;0.6 = 0x99/0xff&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;</content:encoded></item><item><title><![CDATA[用 CSS 修复 WebKit 伪粗体问题]]></title><description><![CDATA[如何重现： Code Pen 样例页面 （使用最新版 iOS/macOS Safari 访问） 解决方式： 样例截图： macOS High Sierra 10.13.1 - Safari 说明： 重现版本为 iOS 11.1.1，macOS High Sierra 10.1…]]></description><link>http://ambar.li/2017-11-15---webkit-font-synthesis-bug/</link><guid isPermaLink="false">http://ambar.li/2017-11-15---webkit-font-synthesis-bug/</guid><pubDate>Wed, 15 Nov 2017 16:08:00 GMT</pubDate><content:encoded>&lt;p&gt;如何重现：&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//codepen.io/ambarli/full/XzgYeP/&quot;&gt;Code Pen 样例页面&lt;/a&gt;（使用最新版 iOS/macOS Safari 访问）&lt;/p&gt;
 &lt;p&gt;解决方式：&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot;&gt;
@@ -216,4 +330,321 @@ cjkspace&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot
   &lt;/span&gt;
   
   &lt;/a&gt;
-    &lt;/p&gt;</content:encoded></item></channel></rss>
+    &lt;/p&gt;</content:encoded></item><item><title><![CDATA[图标如何对齐文本]]></title><description><![CDATA[关于对齐的常见问题： 浏览器本身如何对齐图标和文本？ 如何封装一个图标组件，使其无论大小如何变化，都能自动对齐临近的文本？ 为什么明明使用了 flex，图标还是看起来差了 1 像素没对齐？ 有两种让浏览器自行对齐的方式（ CodePen demo：浏览器对齐 ）： 一、 flex…]]></description><link>http://ambar.li/2017-11-04---align-svg-icon-to-text/</link><guid isPermaLink="false">http://ambar.li/2017-11-04---align-svg-icon-to-text/</guid><pubDate>Sat, 04 Nov 2017 09:57:00 GMT</pubDate><content:encoded>&lt;p&gt;关于对齐的常见问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器本身如何对齐图标和文本？&lt;/li&gt;
+&lt;li&gt;如何封装一个图标组件，使其无论大小如何变化，都能自动对齐临近的文本？&lt;/li&gt;
+&lt;li&gt;为什么明明使用了 flex，图标还是看起来差了 1 像素没对齐？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;有两种让浏览器自行对齐的方式（&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/vWLova%3Feditors%3D0010&quot;&gt;CodePen demo：浏览器对齐&lt;/a&gt;）：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一、 flex container&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;button style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;display&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;inline-flex&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; alignItems&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;center&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Icons&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Heart &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  Like
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;缺陷：需要创建 flex 容器来包裹图标和文本，而不是仅仅通过修改图标的样式。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二、 vertical-align middle&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Icons&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Heart style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;verticalAlign&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;middle&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;verticalAlign&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;middle&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Like&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;缺陷：需要创建额外标签将文本包裹起来，并且文本偏移了 baseline（将影响上下间距和相邻元素的对齐）。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;虽然上面的方式达到了对齐效果，但浏览器本身如何决定图标放置，参照什么来放置？&lt;/p&gt;
+&lt;p&gt;可以先从字体特征与 CSS &lt;code&gt;vertical-align&lt;/code&gt; 开始探索：&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-3f5a1.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 26.46484375%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAFABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAdm4SD//xAAWEAEBAQAAAAAAAAAAAAAAAAABAhD/2gAIAQEAAQUCIoEc/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAGBAAAgMAAAAAAAAAAAAAAAAAAAEQMTL/2gAIAQEABj8C22XH/8QAGhAAAgIDAAAAAAAAAAAAAAAAAAERITFBgf/aAAgBAQABPyGIO4MYdcLW5P/aAAwDAQACAAMAAAAQcA//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAaEAEBAAIDAAAAAAAAAAAAAAABEQAxIUFR/9oACAEBAAE/EGCpTUOC6xSmySHOhp7N5//Z&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;vertical-align&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-e8976.jpg 148w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-63df2.jpg 295w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-f8fb9.jpg 590w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-85e3d.jpg 885w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-d1924.jpg 1180w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-9452e.jpg 1770w,
+/static/2017-11-04---01-39454b17f1a3327c9dda72a69255e200-3f5a1.jpg 2048w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;图 1：vertical-align&lt;/p&gt;
+&lt;p&gt;简要说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;最左侧是一个已对齐的图标，尺寸为 1.2em&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最右侧文字标注了横向参考线，除 &lt;code&gt;cap-line&lt;/code&gt; 外都是 &lt;code&gt;vertical-align&lt;/code&gt; 的可选值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;vertical-align&lt;/code&gt; 作用于文本和非文本（如图片元素）效果不同，以应用 &lt;code&gt;vertical-align: baseline&lt;/code&gt; 样式为例：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;同一行内不同字体类型、字体大小或不同行高的文本对齐在相同 baseline 上&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;同一行内不同尺寸的图片底边对齐在 baseline 上&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;xHeight&lt;/code&gt; 为小写字母 x 的高度（CSS 有 &lt;code&gt;ex&lt;/code&gt; 单位表示它，&lt;code&gt;1ex&lt;/code&gt; 约为 &lt;code&gt;0.5em&lt;/code&gt; 左右 ）， &lt;code&gt;vertical-align: middle&lt;/code&gt; 的定义就是它的一半高度，因此仅仅对图片应用 &lt;code&gt;vertical-align: middle&lt;/code&gt;样式图片会看起来太靠下&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;capHeight&lt;/code&gt; 为大写字母高度（CSS/JS 均无法获取，多数字体约为 &lt;code&gt;0.7em&lt;/code&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;近似对齐：放置在 cap-line 与 baseline 中间&lt;/h2&gt;
+&lt;p&gt;从图 1 的直接猜测是把图片对齐在大写字母中间，即在 baseline 往上移动 &lt;code&gt;capHeight&lt;/code&gt; 的一半。&lt;/p&gt;
+&lt;p&gt;这种对齐有两种实现方式（&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/NwNKwN%3Feditors%3D0010&quot;&gt;CodePen demo：Cap 对齐&lt;/a&gt;）：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一、从 baseline 开始偏移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认，图标底边贴在 baseline 上，先移动图标自身 50% 使图标中间对齐 baseline，然后上移&lt;code&gt;capHeight&lt;/code&gt;的一半。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/* 计算公式：capHeight / 2 / unitsPerEm ≈ 0.35em */&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.center&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;vertical-align&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; baseline&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;translateY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;calc&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;50% - 0.35em&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;/* 或者将 `capHeight` 可能成变量，动态获取 */&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;/* translateY(calc(50% - var(—capHeight, .35em))) */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;缺陷：添加 CSS 动画会因占用了属性而冲突。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二、&lt;/strong&gt;从 &lt;strong&gt;middle-line 开始偏移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;图标中央就在 middle-line 上，因此先下移&lt;code&gt;xHeight&lt;/code&gt;的一半，再上移&lt;code&gt;capHeight&lt;/code&gt;的一半。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;/*
+// 计算公式
+top
+  = (xHeight/2 - capHeight/2) / unitsPerEm
+  ≈ .5em/2 - .7em/2
+  ≈ -.1em
+
+// 或复用 ex 单位来计算
+top
+  = 1ex/2 - capHeight/2 / unitsPerEm
+  ≈ calc(0.5ex - 0.35em)
+*/&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// JSX&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Icons&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Heart
+    style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      verticalAlign&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;middle&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      position&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;relative&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      top&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;-.1em&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  Like
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;无论选择哪种偏移方式，偏移值都会根据当前字体不同而有细微差异，见下图的高亮列：&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-f3f87.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 29.715639810426538%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAGABQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAG8AD//xAAUEAEAAAAAAAAAAAAAAAAAAAAQ/9oACAEBAAEFAn//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/AT//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/AT//xAAUEAEAAAAAAAAAAAAAAAAAAAAQ/9oACAEBAAY/An//xAAWEAADAAAAAAAAAAAAAAAAAAAAEBH/2gAIAQEAAT8hUP/aAAwDAQACAAMAAAAQA8//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAZEAEAAgMAAAAAAAAAAAAAAAABABEhUWH/2gAIAQEAAT8QMhcDu5Vn/9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Font Metrics&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-e8976.jpg 148w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-63df2.jpg 295w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-f8fb9.jpg 590w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-85e3d.jpg 885w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-d1924.jpg 1180w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-9452e.jpg 1770w,
+/static/2017-11-04---fm-3d2960e6080809188fdca5f43394693c-f3f87.jpg 2110w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;图 2：Font Metrics&lt;/p&gt;
+&lt;h2&gt;精确对齐：对齐定高文本&lt;/h2&gt;
+&lt;p&gt;「精确」指达到与浏览器自行对齐相同的效果。需求来自问题 2，如何封装一个图标组件，仅通过修改图标本身来对齐相邻文本。&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-b64f5.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 590px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 61.58038147138964%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAMABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAECAwX/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAAB67ZJC6n/xAAaEAACAgMAAAAAAAAAAAAAAAABEQAiAgMQ/9oACAEBAAEFAjsqc6guIJDn/8QAFREBAQAAAAAAAAAAAAAAAAAAEEH/2gAIAQMBAT8Bp//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQIBAT8BP//EABkQAAIDAQAAAAAAAAAAAAAAABARAAECUf/aAAgBAQAGPwLV8jCR/8QAHRAAAgEEAwAAAAAAAAAAAAAAAREAECExQWGh4f/aAAgBAQABPyFJmxHcSCDm8W9moLMKAEEKf//aAAwDAQACAAMAAAAQXw//xAAVEQEBAAAAAAAAAAAAAAAAAAAQUf/aAAgBAwEBPxCj/8QAFREBAQAAAAAAAAAAAAAAAAAAARD/2gAIAQIBAT8QRn//xAAaEAEBAQEBAQEAAAAAAAAAAAABEQAhQVGR/9oACAEBAAE/ECkhmB4Rct4X1EJbzBUDnMLugqPrbf3K+WBLMcDf/9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;line-height&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-f8fb9.jpg&quot;
+        srcset=&quot;/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-e8976.jpg 148w,
+/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-63df2.jpg 295w,
+/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-f8fb9.jpg 590w,
+/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-85e3d.jpg 885w,
+/static/2017-11-04---02-1d689c9e67d94a90acd02ce5f5c94b43-b64f5.jpg 1101w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;图 3：三种 line-height&lt;/p&gt;
+&lt;p&gt;这个图很有趣，内联元素在不同条件下产生了不同的边界（颜色填充区域），简要说明（&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/bYpbvp%3Feditors%3D0010&quot;&gt;CodePen demo：浏览器本身如何对齐&lt;/a&gt;）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;j&lt;/code&gt; 表示基础的 &lt;code&gt;line-height&lt;/code&gt;，也就是 &lt;code&gt;1em&lt;/code&gt; 高，等同于当前的 &lt;code&gt;font-size&lt;/code&gt; 100px，当 inline-block 元素（也可以是 inline-flex item）设置为 &lt;code&gt;line-height: 1&lt;/code&gt; 时可以得到它。值得注意 &lt;code&gt;j&lt;/code&gt; 的边界不在任何参考线上。此图也能说明不要误用这个值，有可能（如应用 overflow 样式）内容溢出导致截断。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;x&lt;/code&gt; 表示安全的 &lt;code&gt;line-height&lt;/code&gt;，是 inline 元素默认的高度（也是 &lt;code&gt;text-top&lt;/code&gt; 到 &lt;code&gt;text-bottom&lt;/code&gt; 的距离）。也可以由图 2 中的 &lt;code&gt;(ascender + descender) / unitsPerEm&lt;/code&gt; 计算得到（当前字体对应表格中第三行的值，1.1777）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;S&lt;/code&gt; 表示实际的 &lt;code&gt;line-height&lt;/code&gt; ，是 inline-block 或 inline-flex 元素默认高度（也是&lt;code&gt;top&lt;/code&gt; 到 &lt;code&gt;bottom&lt;/code&gt; 的距离）。当设置父容器 &lt;code&gt;line-height: 1.7&lt;/code&gt; 时，实际 &lt;code&gt;line-height&lt;/code&gt; 将是 &lt;code&gt;100px * 1.7 = 170px&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有了上面的图例，精确对齐思路可以借鉴 CSS 规范中的 &lt;a href=&quot;http://link.zhihu.com/?target=https%3A//www.w3.org/TR/CSS22/visudet.html%23strut&quot;&gt;strut&lt;/a&gt; 概念，创建一个局部的容器，生成不可见文本（零宽空格，模拟 strut），让不可见文本对齐 line-box 中其他文本，让图标对齐这个不可见文本：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;On a &lt;a href=&quot;http://link.zhihu.com/?target=https%3A//www.w3.org/TR/CSS22/visuren.html%23block-boxes&quot;&gt;block container element&lt;/a&gt; whose content is composed of &lt;a href=&quot;http://link.zhihu.com/?target=https%3A//www.w3.org/TR/CSS22/visuren.html%23inline-level&quot;&gt;inline-level&lt;/a&gt; elements, ‘line-height’ specifies the &lt;em&gt;minimal&lt;/em&gt; height of line boxes within the element. The minimum height consists of a minimum height above the baseline and a minimum depth below it, exactly as if each line box starts with a zero-width inline box with the element’s font and line height properties&lt;a href=&quot;https://zhuanlan.zhihu.com/p/30624268/edit&quot;&gt;.&lt;/a&gt; We call that imaginary box a “strut.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;局部容器的高度可以是上图 &lt;code&gt;S&lt;/code&gt; 的高度（inline-flex 居中），也可以跟随图标的高度（图标绝对定位，保持与容器位置相同），也可以固定（图标绝对定位居中，但缺陷是不能太大超过行高）。&lt;/p&gt;
+&lt;p&gt;精确对齐的两种实现方式（&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/NwNPpo%3Feditors%3D0010&quot;&gt;CodePen demo：模拟浏览器对齐&lt;/a&gt;）：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一、&lt;code&gt;inline-block&lt;/code&gt;&lt;/strong&gt; &lt;strong&gt;hack&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;MyIcon&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;width&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; height&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span
+    style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      position&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;relative&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      display&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;inline-block&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      lineHeight&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; height&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 使文本高度为图标高度&lt;/span&gt;
+      width&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 占住横向空间&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;\u200b&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;/* ZWSP(zero-width space) */&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;svg width&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;width&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;position&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;absolute&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; left&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; top&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;对齐效果完美。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二、&lt;code&gt;inline-flex&lt;/code&gt;&lt;/strong&gt; &lt;strong&gt;hack（推荐）&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;MyIcon&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; props &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span
+    style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      display&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;inline-flex&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      alignItems&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;center&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;\u200b&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;/* ZWSP(zero-width space) */&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;svg &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;props&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;对齐效果完美（不支持过时的浏览器 &lt;a href=&quot;http://link.zhihu.com/?target=http%3A//caniuse.com/%23search%3Dflex&quot;&gt;caniuse.com/flex&lt;/a&gt;）。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;为什么明明使用了 flex，图标还是看起来差了 1 像素没对齐？&lt;/h2&gt;
+&lt;p&gt;图标与文本的对齐误差取决于 &lt;code&gt;iconSize&lt;/code&gt;、&lt;code&gt;fontSize&lt;/code&gt; 和 &lt;code&gt;lineHeight&lt;/code&gt; 之间奇偶关系（不同浏览器表现可能不同，&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/ambarli/pen/ZaWJQg%3Feditors%3D0010&quot;&gt;CodePen demo: 奇偶对齐&lt;/a&gt;）：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;iconSize&lt;/th&gt;
+&lt;th&gt;fontSize&lt;/th&gt;
+&lt;th&gt;lineHeight&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;奇数&lt;/td&gt;
+&lt;td&gt;偶数&lt;/td&gt;
+&lt;td&gt;奇偶改变不影响图标对齐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;偶数&lt;/td&gt;
+&lt;td&gt;奇数&lt;/td&gt;
+&lt;td&gt;奇偶改变不影响图标对齐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;偶数&lt;/td&gt;
+&lt;td&gt;偶数&lt;/td&gt;
+&lt;td&gt;偶数对齐，奇数偏上 1px&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;奇数&lt;/td&gt;
+&lt;td&gt;奇数&lt;/td&gt;
+&lt;td&gt;奇数对齐，偶数偏上 1px&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;小数（.2/.5/.8）&lt;/td&gt;
+&lt;td&gt;奇数&lt;/td&gt;
+&lt;td&gt;奇偶改变不影响图标对齐，都上偏 1px（偶数时图标纵向拉伸了 1px）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;小数（.2/.5/.8）&lt;/td&gt;
+&lt;td&gt;偶数&lt;/td&gt;
+&lt;td&gt;偶数对齐，奇数偏上 1px（偶数时图标纵向拉伸了 1px）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;👆 测试环境：字体 PingFang SC，浏览器 Chrome，对齐 Flex。&lt;/p&gt;
+&lt;h2&gt;相关&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//codepen.io/collection/XjyabO/&quot;&gt;How to Align - a Collection on CodePen&lt;/a&gt; 所有示例列表&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=http%3A//ambar.li/reiconify/md.icons/&quot;&gt;md.icons&lt;/a&gt; 自动生成的全套 Material icons，添加了方便的对齐参数&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//www.w3.org/TR/CSS22/visuren.html%23inline-formatting&quot;&gt;W3C: Visual Formatting Model&lt;/a&gt; 了解规范如何定义内联行为和行高计算&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=http%3A//iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align&quot;&gt;Deep dive CSS: font metrics, line-height and vertical-align&lt;/a&gt; 感谢作者的精彩图解&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//github.com/yahoo/blink-diff&quot;&gt;blink-diff&lt;/a&gt; 用工具需要对比生成的对齐效果，而不是用肉眼&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=http%3A//designwithfontforge.com/zh-CN/What_Is_a_Font.html&quot;&gt;什么是字体?&lt;/a&gt; 了解 unitsPerEm/ascender/descender 等概念&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//opentype.js.org/font-inspector.html&quot;&gt;opentype.js&lt;/a&gt;、&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//fontforge.github.io/&quot;&gt;FontForge&lt;/a&gt; 查询 font metrics&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;附&lt;/h2&gt;
+&lt;p&gt;图标转 React 组件工具，集成了本文提到的对齐属性（&lt;code&gt;center&lt;/code&gt;）：&lt;a href=&quot;http://link.zhihu.com/?target=https%3A//github.com/ambar/reiconify&quot;&gt;reiconify​&lt;/a&gt;&lt;/p&gt;</content:encoded></item></channel></rss>

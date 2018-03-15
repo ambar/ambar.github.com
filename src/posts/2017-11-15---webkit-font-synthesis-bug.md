@@ -13,7 +13,7 @@ font-synthesis: style;
 
 样例截图：
 
-![样例](images/2017-11-15---01.jpg)
+![样例](images/2017-11-15---bug.jpg)
 
 macOS High Sierra 10.13.1 - Safari
 

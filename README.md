@@ -1,7 +1,7 @@
-# gatsby-starter-blog
+# blog
 
-Gatsby starter for creating a blog
+A [Gatsby](https://www.gatsbyjs.org/) blog.
 
 ## Running in development
 
-`gatsby develop`
+`npm start`

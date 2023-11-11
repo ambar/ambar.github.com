@@ -1,47 +1,41 @@
 {
-  "private": true,
   "name": "ambar.github.com",
-  "description": "Starter Gatsby Blog",
+  "private": true,
+  "description": "A starter for a blog powered by Gatsby and Markdown",
   "version": "1.0.0",
-  "license": "MIT",
-  "main": "n/a",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "0BSD",
   "scripts": {
+    "deploy": "npm run build && gh-pages -d public -b master",
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
-    "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.{js,css,md}'",
-    "build": "rm -rf public/** && gatsby build",
-    "deploy": "npm run build && gh-pages -d public -b master"
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "gatsby": "^1.9.223",
-    "gatsby-link": "^1.6.37",
-    "gatsby-plugin-feed": "^1.3.18",
-    "gatsby-plugin-google-analytics": "^1.0.19",
-    "gatsby-plugin-offline": "^1.0.14",
-    "gatsby-plugin-react-helmet": "^1.0.8",
-    "gatsby-plugin-sharp": "^1.6.38",
-    "gatsby-plugin-typography": "^1.7.15",
-    "gatsby-remark-copy-linked-files": "^1.5.28",
-    "gatsby-remark-images": "^1.5.54",
-    "gatsby-remark-prismjs": "^1.2.15",
-    "gatsby-remark-responsive-iframe": "^1.4.17",
-    "gatsby-remark-smartypants": "^1.4.11",
-    "gatsby-source-filesystem": "^1.5.26",
-    "gatsby-transformer-remark": "^1.7.33",
-    "gatsby-transformer-sharp": "^1.6.21",
-    "lodash": "^4.17.5",
-    "react-responsive-grid": "^0.3.4",
-    "typeface-alegreya": "^0.0.54",
-    "typeface-alegreya-sans": "^0.0.54",
-    "typography-plugin-code": "^0.16.11",
-    "typography-theme-de-young": "^0.16.9"
+    "@fontsource/merriweather": "^5.0.3",
+    "@fontsource-variable/montserrat": "^5.0.4",
+    "gatsby": "^5.12.4",
+    "gatsby-plugin-feed": "^5.12.0",
+    "gatsby-plugin-image": "^3.12.0",
+    "gatsby-plugin-manifest": "^5.12.0",
+    "gatsby-plugin-sharp": "^5.12.0",
+    "gatsby-remark-images": "^7.12.0",
+    "gatsby-remark-prismjs": "^7.12.0",
+    "gatsby-remark-responsive-iframe": "^6.12.0",
+    "gatsby-source-filesystem": "^5.12.0",
+    "gatsby-transformer-remark": "^6.12.0",
+    "gatsby-transformer-sharp": "^5.12.0",
+    "prismjs": "^1.29.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
-    "eslint": "^4.18.2",
-    "eslint-plugin-react": "^7.7.0",
-    "gh-pages": "^1.1.0",
-    "prettier": "^1.11.1"
+    "prettier": "^2.8.8"
   }
 }
